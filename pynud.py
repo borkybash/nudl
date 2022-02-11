@@ -15,6 +15,14 @@ def get_search_html(url):
     search_html = bs4.BeautifulSoup(res.text, features='html.parser')
     return search_html
     
+def get_search_titles(html):
+    title_elems = html.select('.result_text')
+    titles = []
+    for i in range(len(title_elems)):
+        titles.append(title_elems[i].getText().strip())
+    print(titles[0])
 
-print(get_search_url(sys.argv[1:]))
 search_url = get_search_url(sys.argv[1:])
+search_html = get_search_html(search_url)
+get_search_titles(search_html)
+
