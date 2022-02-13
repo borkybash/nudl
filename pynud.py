@@ -9,11 +9,13 @@ def get_search_url(args):
     search_url = "https://www.imdb.com/find?q=" + args
     return search_url
 
+
 def get_search_html(url):
     res = requests.get(url)
     res.raise_for_status()
     search_html = bs4.BeautifulSoup(res.text, features='html.parser')
     return search_html
+
     
 def get_search_titles(html):
     title_elems = html.select('.result_text')
@@ -22,13 +24,15 @@ def get_search_titles(html):
         titles.append(title_elems[i].getText().strip())
     return titles
 
+
 def get_search_ids(html):
     id_elems = html.select('.result_text a')
     ids = []
     for i in range(len(id_elems)):
-        title_id = id_elems[0].attrs['href']    
+        title_id = id_elems[i].attrs['href']    
         ids.append(title_id)
     return ids 
+
 
 def get_nudity_list(id):
     parents_guide_url = f'https://www.imdb.com{id}parentalguide'
@@ -41,10 +45,12 @@ def get_nudity_list(id):
         nudity_list.append(nudity_elems[i].getText().strip().rstrip('Edit').strip())
     return nudity_list
 
+
 def display_nudity_info(title, items):
     print(title)
     for i in items:
         print('\n' + i)
+
 
 search_url = get_search_url(sys.argv[1:])
 search_html = get_search_html(search_url)
