@@ -41,8 +41,14 @@ def get_nudity_list(id):
         nudity_list.append(nudity_elems[i].getText().strip().rstrip('Edit').strip())
     return nudity_list
 
+def display_nudity_info(title, items):
+    print(title)
+    for i in items:
+        print('\n' + i)
+
 search_url = get_search_url(sys.argv[1:])
 search_html = get_search_html(search_url)
 search_titles = get_search_titles(search_html)
 search_ids = get_search_ids(search_html)
-print(get_nudity_list(search_ids[0]))
+nudity_list = get_nudity_list(search_ids[0])
+display_nudity_info(search_titles[0], nudity_list)
