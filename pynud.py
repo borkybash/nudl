@@ -30,8 +30,19 @@ def get_search_ids(html):
         ids.append(title_id)
     return ids 
 
+def get_nudity_list(id):
+    parents_guide_url = f'https://www.imdb.com{id}parentalguide'
+    res = requests.get(parents_guide_url)
+    res.raise_for_status()
+    parents_guide_html = bs4.BeautifulSoup(res.text, features='html.parser')
+    nudity_elems = parents_guide_html.select('#advisory-nudity li.ipl-zebra-list__item')
+    nudity_list = []
+    for i in range(len(nudity_elems)):
+        nudity_list.append(nudity_elems[i].getText().strip().rstrip('Edit').strip())
+    return nudity_list
+
 search_url = get_search_url(sys.argv[1:])
 search_html = get_search_html(search_url)
-print(get_search_titles(search_html)[0])
-print(get_search_ids(search_html)[0])
-
+search_titles = get_search_titles(search_html)
+search_ids = get_search_ids(search_html)
+print(get_nudity_list(search_ids[0]))
