@@ -2,7 +2,7 @@
 # pynud: retrieve nudity info from movie database site
 
 import sys
-import requests, bs4
+import requests, bs4, click
 
 def get_search_url(args):
     args = "+".join(args)
@@ -46,15 +46,22 @@ def get_nudity_list(id):
     return nudity_list
 
 
-def display_nudity_info(title, items):
-    print(title)
-    for i in items:
-        print('\n' + i)
+@click.command()
+@click.argument('args', nargs=-1)
+def display_nudity_info(args):
+    """Display nudity information for given movie title."""
+    
+    search_url = get_search_url(args)
+    search_html = get_search_html(search_url)
+    search_titles = get_search_titles(search_html)
+    search_ids = get_search_ids(search_html)
+    nudity_list = get_nudity_list(search_ids[0])
+
+    click.echo("\n" + search_titles[0] + "\n")
+    for item in range(len(nudity_list)):
+        click.echo(nudity_list[item])
+        click.echo()
 
 
-search_url = get_search_url(sys.argv[1:])
-search_html = get_search_html(search_url)
-search_titles = get_search_titles(search_html)
-search_ids = get_search_ids(search_html)
-nudity_list = get_nudity_list(search_ids[0])
-display_nudity_info(search_titles[0], nudity_list)
+if __name__ == '__main__':
+    display_nudity_info()
