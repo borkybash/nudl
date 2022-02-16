@@ -34,8 +34,8 @@ def get_search_ids(html):
     return ids 
 
 
-def get_nudity_list(id):
-    parents_guide_url = f'https://www.imdb.com{id}parentalguide'
+def get_nudity_list(title_id):
+    parents_guide_url = f'https://www.imdb.com{title_id}parentalguide'
     res = requests.get(parents_guide_url)
     res.raise_for_status()
     parents_guide_html = bs4.BeautifulSoup(res.text, features='html.parser')
