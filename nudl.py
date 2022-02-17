@@ -47,11 +47,11 @@ def get_nudity_list(title_id):
 
 
 @click.command()
-@click.argument('args', nargs=-1)
-def display_nudity_info(args):
+@click.argument('movie_title', nargs=-1, required=True)
+def display_nudity_info(movie_title):
     """Display nudity information for given movie title."""
-    
-    search_url = get_search_url(args)
+
+    search_url = get_search_url(movie_title)
     search_html = get_search_html(search_url)
     search_titles = get_search_titles(search_html)
     search_ids = get_search_ids(search_html)
