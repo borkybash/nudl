@@ -4,12 +4,14 @@
 import sys
 import requests, bs4, click
 
+# Generate search url from given arguments
 def get_search_url(args):
     args = "+".join(args)
     search_url = "https://www.imdb.com/find?q=" + args
     return search_url
 
 
+# Store search page html
 def get_search_html(url):
     res = requests.get(url)
     res.raise_for_status()
@@ -17,6 +19,7 @@ def get_search_html(url):
     return search_html
 
     
+# Webscrape search page & return list of title names
 def get_search_titles(html):
     title_elems = html.select('.result_text')
     titles = []
@@ -25,6 +28,7 @@ def get_search_titles(html):
     return titles
 
 
+# Webscrape search page & return list of title IDs
 def get_search_ids(html):
     id_elems = html.select('.result_text a')
     ids = []
@@ -34,6 +38,7 @@ def get_search_ids(html):
     return ids 
 
 
+# Webscrape parental guidance page & store nudity list
 def get_nudity_list(title_id):
     parents_guide_url = f'https://www.imdb.com{title_id}parentalguide'
     res = requests.get(parents_guide_url)
@@ -46,6 +51,7 @@ def get_nudity_list(title_id):
     return nudity_list
 
 
+# Print out movie title and nudity info to stdout
 def show_nudity_info(nudity_list, title):
     click.echo("\n" + title + "\n")
     for _, item in enumerate(nudity_list):
