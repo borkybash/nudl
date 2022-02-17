@@ -20,16 +20,16 @@ def get_search_html(url):
 def get_search_titles(html):
     title_elems = html.select('.result_text')
     titles = []
-    for i in range(len(title_elems)):
-        titles.append(title_elems[i].getText().strip())
+    for _, title in enumerate(title_elems):
+        titles.append(title.getText().strip())
     return titles
 
 
 def get_search_ids(html):
     id_elems = html.select('.result_text a')
     ids = []
-    for i in range(len(id_elems)):
-        title_id = id_elems[i].attrs['href']    
+    for _, id_elem in enumerate(id_elems):
+        title_id = id_elem.attrs['href']    
         ids.append(title_id)
     return ids 
 
@@ -41,8 +41,8 @@ def get_nudity_list(title_id):
     parents_guide_html = bs4.BeautifulSoup(res.text, features='html.parser')
     nudity_elems = parents_guide_html.select('#advisory-nudity li.ipl-zebra-list__item')
     nudity_list = []
-    for i in range(len(nudity_elems)):
-        nudity_list.append(nudity_elems[i].getText().strip().rstrip('Edit').strip())
+    for _, list_item in enumerate(nudity_elems):
+        nudity_list.append(list_item.getText().strip().rstrip('Edit').strip())
     return nudity_list
 
 
@@ -58,8 +58,8 @@ def display_nudity_info(args):
     nudity_list = get_nudity_list(search_ids[0])
 
     click.echo("\n" + search_titles[0] + "\n")
-    for item in range(len(nudity_list)):
-        click.echo(nudity_list[item])
+    for _, item in enumerate(nudity_list):
+        click.echo(item)
         click.echo()
 
 
