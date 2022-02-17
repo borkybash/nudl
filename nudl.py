@@ -46,9 +46,16 @@ def get_nudity_list(title_id):
     return nudity_list
 
 
+def show_nudity_info(nudity_list, title):
+    click.echo("\n" + title + "\n")
+    for _, item in enumerate(nudity_list):
+        click.echo(item)
+        click.echo()
+    
+
 @click.command()
 @click.argument('movie_title', nargs=-1, required=True)
-def display_nudity_info(movie_title):
+def main(movie_title):
     """Display nudity information for given movie title."""
 
     search_url = get_search_url(movie_title)
@@ -56,12 +63,8 @@ def display_nudity_info(movie_title):
     search_titles = get_search_titles(search_html)
     search_ids = get_search_ids(search_html)
     nudity_list = get_nudity_list(search_ids[0])
-
-    click.echo("\n" + search_titles[0] + "\n")
-    for _, item in enumerate(nudity_list):
-        click.echo(item)
-        click.echo()
+    show_nudity_info(nudity_list, search_titles[0])
 
 
 if __name__ == '__main__':
-    display_nudity_info()
+    main()
