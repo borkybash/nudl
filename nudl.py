@@ -57,19 +57,46 @@ def show_nudity_info(nudity_list, title):
     for _, item in enumerate(nudity_list):
         click.echo(item)
         click.echo()
+
+
+# List search titles & prompt for title selection 
+def show_title_list(search_titles):
+    while True:
+        selections = ["q"]
+        print()
+        for i, title in enumerate(search_titles):
+            print(f"{i+1}) {title}")
+            selections.append(str(i+1))
+        print()
+        title_selection = input("Enter [title #] or [q] to quit: ")
+        if title_selection in selections:
+            break  
+
+    # Validate selection choice
+    if title_selection.lower() == "q":
+        exit()
+    else:
+        return (int(title_selection)-1)
     
 
 @click.command()
 @click.argument('movie_title', nargs=-1, required=True)
-def main(movie_title):
+@click.option('-l', is_flag=True, help='Select from title list.')
+def main(movie_title, l):
     """Display nudity information for given movie title."""
 
     search_url = get_search_url(movie_title)
     search_html = get_search_html(search_url)
     search_titles = get_search_titles(search_html)
     search_ids = get_search_ids(search_html)
-    nudity_list = get_nudity_list(search_ids[0])
-    show_nudity_info(nudity_list, search_titles[0])
+
+    if l:
+        title_index = show_title_list(search_titles)
+    else:
+        title_index = 0
+
+    nudity_list = get_nudity_list(search_ids[title_index])
+    show_nudity_info(nudity_list, search_titles[title_index])
 
 
 if __name__ == '__main__':
