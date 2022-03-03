@@ -7,7 +7,7 @@ import requests, bs4, click
 # Generate search url from given arguments
 def get_search_url(args):
     args = "+".join(args)
-    search_url = "https://www.imdb.com/find?q=" + args
+    search_url = f"https://www.imdb.com/search/title/?title={args}&title_type=feature,tv_movie"
     return search_url
 
 
@@ -21,16 +21,17 @@ def get_search_html(url):
     
 # Webscrape search page & return list of title names
 def get_search_titles(html):
-    title_elems = html.select('.result_text')
+    title_elems = html.select("#main h3.lister-item-header a")
+    year_elems = html.select("#main span.lister-item-year")
     titles = []
-    for _, title in enumerate(title_elems):
-        titles.append(title.getText().strip())
+    for i, title in enumerate(title_elems):
+        titles.append(title.getText() + " " + year_elems[i].getText())
     return titles
 
 
 # Webscrape search page & return list of title IDs
 def get_search_ids(html):
-    id_elems = html.select('.result_text a')
+    id_elems = html.select("#main h3.lister-item-header a")
     ids = []
     for _, id_elem in enumerate(id_elems):
         title_id = id_elem.attrs['href']    
