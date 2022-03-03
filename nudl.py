@@ -65,7 +65,7 @@ def show_title_list(search_titles):
     while True:
         selections = ["q"]
         print()
-        for i, title in enumerate(search_titles):
+        for i, title in enumerate(search_titles[:10]):
             print(f"{i+1}) {title}")
             selections.append(str(i+1))
         print()
