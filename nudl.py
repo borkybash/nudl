@@ -53,10 +53,9 @@ def get_nudity_list(title_id):
 
 # Print out movie title and nudity info to stdout
 def show_nudity_info(nudity_list, title):
-    click.echo("\n" + title + "\n")
+    click.echo(title + "\n")
     for _, item in enumerate(nudity_list):
-        click.echo(item)
-        click.echo()
+        click.echo("* " + item)
 
 
 # List search titles & prompt for title selection 
